@@ -37,6 +37,10 @@ func TestLanguageFromUserSetting(t *testing.T) {
 		{"zh-Hant-TW", LangZhTW},
 		{"zh", LangZhCN},
 		{"en", LangEn},
+		{"ru", LangRu},
+		{"ru-RU", LangRu},
+		{"ru_UA", LangRu},
+		{"rue", LangEn},
 		{"fr", LangEn},
 		{"ja", LangEn},
 	} {
@@ -82,6 +86,7 @@ func TestBackendMessageLanguage(t *testing.T) {
 	quota := map[string]any{"Remaining": "$0.10"}
 	const english = "Insufficient user quota, remaining quota: $0.10"
 	const chinese = "用户额度不足, 剩余额度: $0.10"
+	const russian = "Недостаточно средств на балансе, остаток: $0.10"
 	for _, tc := range []struct {
 		name            string
 		defaultLanguage string
@@ -97,6 +102,8 @@ func TestBackendMessageLanguage(t *testing.T) {
 		{"header in a language without a locale", "zh-CN", "", "fr-FR", english},
 		{"saved language wins over the header", "", "zhTW", "en-US", "使用者額度不足，剩餘額度：$0.10"},
 		{"saved language", "zh-CN", "en", "", english},
+		{"Russian header", "zh-CN", "", "ru-RU,ru;q=0.9,en;q=0.8", russian},
+		{"saved Russian", "zh-CN", "ru", "en-US", russian},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			common.DefaultLanguage = tc.defaultLanguage
