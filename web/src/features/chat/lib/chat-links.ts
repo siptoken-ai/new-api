@@ -17,6 +17,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 import { API_KEY_STATUS } from '@/features/keys/constants'
+import { getSiteName } from '@/lib/api-base-address'
 
 export type ChatLinkType = 'web' | 'custom-protocol' | 'fluent'
 
@@ -38,6 +39,7 @@ export type ResolveChatUrlParams = {
   template: string
   apiKey?: string
   serverAddress: string
+  siteName?: string | null
 }
 
 export type ActiveApiKey = {
@@ -150,10 +152,28 @@ function normalizeApiKey(apiKey: string): string {
   return trimmed.startsWith('sk-') ? trimmed : `sk-${trimmed}`
 }
 
+// SipToken: Cherry Studio files an import under the provider ID it is given,
+// and "new-api" is its built-in New API preset. Importing there replaced the
+// address of any other New API site the user had set up in it, while that
+// site's key stayed first in line. Import as the site's own provider instead
+// (SIPTOKEN.md).
+function cherryProvider(siteName: string | null | undefined): {
+  id: string
+  name?: string
+} {
+  const name = siteName?.trim()
+  const id = name
+    ?.toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+  return name && id ? { id, name } : { id: 'new-api' }
+}
+
 export function resolveChatUrl({
   template,
   apiKey,
   serverAddress,
+  siteName = getSiteName(),
 }: ResolveChatUrlParams): string {
   let url = template
   const safeServerAddress = serverAddress || ''
@@ -162,7 +182,7 @@ export function resolveChatUrl({
 
   if (url.includes('{cherryConfig}')) {
     const payload = {
-      id: 'new-api',
+      ...cherryProvider(siteName),
       baseUrl: safeServerAddress,
       apiKey: safeApiKey,
     }
