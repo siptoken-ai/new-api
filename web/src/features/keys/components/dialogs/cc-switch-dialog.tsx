@@ -28,7 +28,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { getUserModels } from '@/lib/api'
-import { getApiBaseAddress } from '@/lib/api-base-address'
+import { getApiBaseAddress, getSiteName } from '@/lib/api-base-address'
 import { requireServerSuccess } from '@/lib/server-error-message'
 
 const APP_CONFIGS = {
@@ -55,6 +55,11 @@ const APP_CONFIGS = {
 } as const
 
 type AppType = keyof typeof APP_CONFIGS
+
+// SipToken: name the provider after the site, e.g. "SipToken" (SIPTOKEN.md)
+function defaultProviderName(app: AppType): string {
+  return getSiteName() ?? APP_CONFIGS[app].defaultName
+}
 
 function buildCCSwitchURL(
   app: string,
@@ -88,7 +93,7 @@ interface Props {
 export function CCSwitchDialog(props: Props) {
   const { t } = useTranslation()
   const [app, setApp] = useState<AppType>('claude')
-  const [name, setName] = useState<string>(APP_CONFIGS.claude.defaultName)
+  const [name, setName] = useState<string>(() => defaultProviderName('claude'))
   const [models, setModels] = useState<Record<string, string>>({})
 
   const { data: modelsData } = useQuery({
@@ -110,7 +115,7 @@ export function CCSwitchDialog(props: Props) {
 
       setApp('claude')
 
-      setName(APP_CONFIGS.claude.defaultName)
+      setName(defaultProviderName('claude'))
     }
   }, [props.open])
 
@@ -119,7 +124,7 @@ export function CCSwitchDialog(props: Props) {
   const handleAppChange = (val: string) => {
     const appVal = val as AppType
     setApp(appVal)
-    setName(APP_CONFIGS[appVal].defaultName)
+    setName(defaultProviderName(appVal))
     setModels({})
   }
 
@@ -183,7 +188,7 @@ export function CCSwitchDialog(props: Props) {
             id='cc-switch-name'
             value={name}
             onChange={(event) => setName(event.target.value)}
-            placeholder={currentConfig.defaultName}
+            placeholder={defaultProviderName(app)}
           />
         </div>
 

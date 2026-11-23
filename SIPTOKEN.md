@@ -18,6 +18,7 @@ Upstream base: tag `v1.0.0-rc.51`, commit `c9c6da2786b6a0912215127e78e28fbc6650c
 | 2026-11-24 | `.github/dependabot.yml` (removed)      | No dependency update pull requests here; dependencies follow upstream releases.                         |
 | 2026-11-24 | `web/src/lib/api-base-address.ts` (new) | Picks the address API clients should use: the first API info entry if the admin set one, otherwise the server address. |
 | 2026-11-24 | `web/src/features/keys/components/dialogs/cc-switch-dialog.tsx`, `web/src/features/keys/components/data-table-row-actions.tsx`, `web/src/features/chat/hooks/use-chat-presets.ts` | CC Switch import, chat app imports (Cherry Studio and others) and "Copy Connection Info" use that address instead of the server address. SipToken's server address is the console (needed for email links), while clients should call the API domain. |
+| 2026-11-24 | `web/src/lib/api-base-address.ts`, `web/src/features/keys/components/dialogs/cc-switch-dialog.tsx` | The CC Switch import names the provider after the site (System Name, e.g. "SipToken") instead of "My Claude" / "My Codex" / "My Gemini". Falls back to upstream's names while the System Name is unset or still "New API". |
 
 Nothing else differs from upstream: compare with the first commit of this
 repository, which is the unmodified upstream source. The web console frontend
