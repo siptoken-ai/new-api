@@ -15,8 +15,10 @@ Upstream base: tag `v1.0.0-rc.51`, commit `c9c6da2786b6a0912215127e78e28fbc6650c
 | 2026-11-24 | `i18n/i18n.go`                          | Loads the Russian locale and maps `ru` / `ru-*` (user setting or `Accept-Language`) to it.             |
 | 2026-11-24 | `i18n/i18n_test.go`                     | Tests for the Russian language mapping and messages.                                                    |
 | 2026-11-24 | `.github/workflows/siptoken-image.yml`  | Builds the Docker image from this source.                                                               |
+| 2026-11-24 | `.github/dependabot.yml` (removed)      | No dependency update pull requests here; dependencies follow upstream releases.                         |
 
-Nothing else differs from upstream. The web console frontend is unmodified and
+Nothing else differs from upstream: compare with the first commit of this
+repository, which is the unmodified upstream source. The web console frontend is unmodified and
 keeps the attribution and the link to the original project required by NOTICE.
 
 ## Upgrading
