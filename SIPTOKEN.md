@@ -16,9 +16,11 @@ Upstream base: tag `v1.0.0-rc.51`, commit `c9c6da2786b6a0912215127e78e28fbc6650c
 | 2026-11-24 | `i18n/i18n_test.go`                     | Tests for the Russian language mapping and messages.                                                    |
 | 2026-11-24 | `.github/workflows/siptoken-image.yml`  | Builds the Docker image from this source.                                                               |
 | 2026-11-24 | `.github/dependabot.yml` (removed)      | No dependency update pull requests here; dependencies follow upstream releases.                         |
+| 2026-11-24 | `web/src/lib/api-base-address.ts` (new) | Picks the address API clients should use: the first API info entry if the admin set one, otherwise the server address. |
+| 2026-11-24 | `web/src/features/keys/components/dialogs/cc-switch-dialog.tsx`, `web/src/features/keys/components/data-table-row-actions.tsx`, `web/src/features/chat/hooks/use-chat-presets.ts` | CC Switch import, chat app imports (Cherry Studio and others) and "Copy Connection Info" use that address instead of the server address. SipToken's server address is the console (needed for email links), while clients should call the API domain. |
 
 Nothing else differs from upstream: compare with the first commit of this
-repository, which is the unmodified upstream source. The web console frontend is unmodified and
+repository, which is the unmodified upstream source. The web console frontend
 keeps the attribution and the link to the original project required by NOTICE.
 
 ## Upgrading
@@ -26,7 +28,8 @@ keeps the attribution and the link to the original project required by NOTICE.
 1. Check out the new upstream tag.
 2. Re-apply the changes above. If upstream added keys to `i18n/locales/en.yaml`,
    add the same keys to `ru.yaml`; `go test ./i18n/` fails until every key is
-   translated.
+   translated. Search the frontend for other places that read `server_address`
+   for client imports, and route new ones through `getApiBaseAddress`.
 3. Record the new base tag and commit at the top of this file and in
    `UPSTREAM_TAG` in `.github/workflows/siptoken-image.yml`.
 4. Push to `main`. The workflow runs the tests and publishes

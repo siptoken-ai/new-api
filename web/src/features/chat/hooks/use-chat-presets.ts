@@ -20,6 +20,7 @@ import { useMemo } from 'react'
 
 import type { SystemStatus } from '@/features/auth/types'
 import { useStatus } from '@/hooks/use-status'
+import { getApiBaseAddress } from '@/lib/api-base-address'
 
 import {
   type ChatPreset,
@@ -39,22 +40,10 @@ function getStoredStatusChats(): RawChatConfig {
   }
 }
 
+// SipToken: chat app imports get the API address, not the console address
+// (SIPTOKEN.md)
 function extractServerAddress(status: SystemStatus | null) {
-  const fromStatus =
-    (status?.server_address as string | undefined) ??
-    (status?.serverAddress as string | undefined) ??
-    status?.data?.server_address ??
-    (status?.data as Record<string, unknown> | undefined)?.serverAddress
-
-  if (fromStatus && typeof fromStatus === 'string') {
-    return fromStatus
-  }
-
-  if (typeof window !== 'undefined') {
-    return window.location.origin
-  }
-
-  return ''
+  return getApiBaseAddress(status)
 }
 
 function extractChats(status: SystemStatus | null): RawChatConfig {
