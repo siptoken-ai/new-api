@@ -25,6 +25,7 @@ import { PublicLayout } from '@/components/layout'
 import { RichContent } from '@/components/rich-content'
 import { Card, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
+import { convertDetectedLanguage } from '@/i18n/languages'
 import { isHttpUrl, isLikelyHtml } from '@/lib/content-format'
 
 import type { LegalDocumentResponse } from './types'
@@ -33,16 +34,14 @@ import type { LegalDocumentResponse } from './types'
 // configured URL becomes the website's code for the console language.
 function localizeDocumentUrl(url: string, language: string): string {
   if (!url.includes('{lang}')) return url
-  const lang = language.toLowerCase()
+  // i18next uses `zhCN` / `zhTW` for Chinese
+  const lang = convertDetectedLanguage(language)
   let site = 'en'
-  if (
-    ['zh-tw', 'zh-hk', 'zh-mo'].includes(lang) ||
-    lang.startsWith('zh-hant')
-  ) {
+  if (lang === 'zhTW') {
     site = 'zh-hant'
-  } else if (lang.startsWith('zh')) {
+  } else if (lang === 'zhCN') {
     site = 'zh'
-  } else if (lang.startsWith('ru')) {
+  } else if (lang.toLowerCase().startsWith('ru')) {
     site = 'ru'
   }
   return url.replaceAll('{lang}', site)
