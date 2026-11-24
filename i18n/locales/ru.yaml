@@ -47,7 +47,7 @@ relay.response_rejected: "Ответ остановлен правилами с�
 
 # Emails and the name of the token created at registration
 user.default_token_name: "Первый токен {{.Username}}"
-email.verification.subject: "{{.SystemName}}: подтверждение адреса электронной почты"
+email.verification.subject: "{{.SystemName}}: код подтверждения"
 email.verification.greeting: "Здравствуйте! Вы подтверждаете адрес электронной почты для {{.SystemName}}."
 email.verification.code: "Ваш код подтверждения: <strong>{{.Code}}</strong>"
 email.verification.validity: "Код действителен {{.Minutes}} мин. Если вы его не запрашивали, просто проигнорируйте это письмо."
@@ -61,10 +61,10 @@ email.binding.new_intro: "Подтвердите привязку этого а�
 email.binding.old_intro: "Запрошена смена адреса электронной почты вашего аккаунта. Подтвердите замену текущего адреса."
 email.binding.code: "Код подтверждения: <strong>{{.Code}}</strong>"
 email.binding.new_validity: "Код действителен {{.Minutes}} мин. Если вы не запрашивали это изменение, никому не сообщайте этот код."
-email.binding.old_validity: "Код действителен {{.Minutes}} мин. Если вы не запрашивали это изменение, никому не сообщайте этот код и свяжитесь с администратором."
+email.binding.old_validity: "Код действителен {{.Minutes}} мин. Если вы не запрашивали это изменение, никому не сообщайте этот код и свяжитесь со службой поддержки."
 email.security_notice.subject: "{{.SystemName}} — уведомление о безопасности аккаунта"
 email.security_notice.changed: "Изменены настройки безопасности вашего аккаунта: {{.Event}}."
-email.security_notice.advice: "Если это сделали не вы, откройте настройки безопасности аккаунта, завершите другие сеансы входа и свяжитесь с администратором."
+email.security_notice.advice: "Если это сделали не вы, откройте настройки безопасности аккаунта, завершите другие сеансы входа и свяжитесь со службой поддержки."
 email.security_event.password_updated: "пароль изменён"
 email.security_event.email_change_requested: "запрошена смена адреса электронной почты"
 email.security_event.email_changed: "адрес электронной почты изменён"

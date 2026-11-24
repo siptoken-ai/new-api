@@ -18,16 +18,35 @@ For commercial licensing, please contact support@quantumnous.com
 */
 import { useQuery } from '@tanstack/react-query'
 import { FileWarning } from 'lucide-react'
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { PublicLayout } from '@/components/layout'
 import { RichContent } from '@/components/rich-content'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { isHttpUrl, isLikelyHtml } from '@/lib/content-format'
 
 import type { LegalDocumentResponse } from './types'
+
+// SipToken: the website addresses its legal pages per locale; `{lang}` in the
+// configured URL becomes the website's code for the console language.
+function localizeDocumentUrl(url: string, language: string): string {
+  if (!url.includes('{lang}')) return url
+  const lang = language.toLowerCase()
+  let site = 'en'
+  if (
+    ['zh-tw', 'zh-hk', 'zh-mo'].includes(lang) ||
+    lang.startsWith('zh-hant')
+  ) {
+    site = 'zh-hant'
+  } else if (lang.startsWith('zh')) {
+    site = 'zh'
+  } else if (lang.startsWith('ru')) {
+    site = 'ru'
+  }
+  return url.replaceAll('{lang}', site)
+}
 
 type LegalDocumentProps = {
   title: string
@@ -42,7 +61,7 @@ export function LegalDocument({
   fetchDocument,
   emptyMessage,
 }: LegalDocumentProps) {
-  const { t } = useTranslation()
+  const { i18n } = useTranslation()
   const { data, isLoading } = useQuery({
     queryKey: [queryKey],
     queryFn: fetchDocument,
@@ -54,8 +73,16 @@ export function LegalDocument({
   const isUrl = hasContent && isHttpUrl(rawContent)
   const contentIsHtml = hasContent && isLikelyHtml(rawContent)
   const success = data?.success ?? false
+  // SipToken: open an external document directly, in the console's language
+  // (SIPTOKEN.md)
+  const externalUrl =
+    success && isUrl ? localizeDocumentUrl(rawContent, i18n.language) : ''
 
-  if (isLoading) {
+  useEffect(() => {
+    if (externalUrl) window.location.replace(externalUrl)
+  }, [externalUrl])
+
+  if (isLoading || externalUrl) {
     return (
       <PublicLayout>
         <div className='mx-auto flex max-w-4xl flex-col gap-4 py-12'>
@@ -84,38 +111,6 @@ export function LegalDocument({
                 </p>
               </div>
             </CardHeader>
-          </Card>
-        </div>
-      </PublicLayout>
-    )
-  }
-
-  if (isUrl) {
-    return (
-      <PublicLayout>
-        <div className='mx-auto max-w-2xl py-12'>
-          <Card>
-            <CardHeader>
-              <CardTitle>{title}</CardTitle>
-            </CardHeader>
-            <CardContent className='space-y-4'>
-              <p className='text-muted-foreground text-sm'>
-                {t(
-                  'The administrator configured an external link for this document.'
-                )}
-              </p>
-              <Button
-                render={
-                  <a
-                    href={rawContent}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                  />
-                }
-              >
-                {t('View document')}
-              </Button>
-            </CardContent>
           </Card>
         </div>
       </PublicLayout>

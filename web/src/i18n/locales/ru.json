@@ -3251,7 +3251,7 @@
     "https://your-server.example.com": "https://your-server.example.com",
     "Human-readable name shown to users during Passkey prompts.": "Понятное для человека имя, отображаемое пользователям во время запросов Passkey.",
     "I confirm enabling high-risk retry": "Я подтверждаю включение высокорискового повтора",
-    "I have read and agree to the": "Я прочитал и согласен с",
+    "I have read and agree to the": "Я прочитал(а) и принимаю документы:",
     "I have read and understood the above compliance reminder": "Я прочитал и понял приведенное выше напоминание о соответствии",
     "I have read and understood the above compliance reminder, acknowledge the related legal risks, and confirm that I bear legal responsibility arising from deployment, operation, and charging behavior.": "Я прочитал и понял приведенное выше напоминание о соответствии, признаю связанные правовые риски и подтверждаю, что несу юридическую ответственность за развертывание, эксплуатацию и взимание платы.",
     "I understand that disabling 2FA removes its authenticator and backup codes.": "Я понимаю, что отключение 2FA удалит привязку приложения-аутентификатора и резервные коды.",
@@ -7749,7 +7749,7 @@
     "Zhipu GLM": "Zhipu GLM",
     "Zhipu V4": "Zhipu V4",
     "Zoom": "Zoom",
-    "By clicking sign in, you agree to our": "Нажимая «Войти», вы соглашаетесь с нашими",
-    "By creating an account, you agree to our": "Создавая аккаунт, вы соглашаетесь с нашими"
+    "By clicking sign in, you agree to our": "Нажимая «Войти», вы принимаете документы:",
+    "By creating an account, you agree to our": "Создавая аккаунт, вы принимаете документы:"
   }
 }
