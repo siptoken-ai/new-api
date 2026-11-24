@@ -21,6 +21,9 @@ jobs:
         with:
           go-version-file: go.mod
       - run: go test ./i18n/
+      - run: go test ./service/ -run 'UpstreamAccountError'
+      - run: go test ./relayconvert/kitutil/
+        working-directory: relaykit
 
   image:
     needs: test

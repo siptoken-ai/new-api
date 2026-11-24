@@ -213,5 +213,8 @@ func MaskSensitiveInfo(str string, upstreamURLs ...string) string {
 		str = hostPattern.ReplaceAllStringFunc(str, maskHostForPlainDomain)
 	}
 
+	if HideUpstreamIdentity.Load() {
+		str = maskUpstreamSites(str, upstreamHosts)
+	}
 	return str
 }

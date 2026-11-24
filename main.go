@@ -73,6 +73,7 @@ func main() {
 	}
 
 	kitutil.Debug.Store(common.DebugEnabled)
+	kitutil.HideUpstreamIdentity.Store(common.GetEnvOrDefaultBool("HIDE_UPSTREAM_IDENTITY", false))
 
 	defer func() {
 		err := model.CloseDB()
